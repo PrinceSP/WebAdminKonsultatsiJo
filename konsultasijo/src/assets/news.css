@@ -1,0 +1,11 @@
+ .newsWrapper img{
+    width: 100px;
+    height: 100px;    
+ }
+ .newsWrapper p {    
+    margin-left: 21px;
+    margin-right: 8px;
+    color: black;
+    font-weight: bold;
+ }
+ 
