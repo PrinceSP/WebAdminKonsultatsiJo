@@ -5,7 +5,7 @@ import '../assets/gap.css';
 import '../assets/styles.css';
 
 const Dashboard = () => {
-    return(
+    return(        
             <SplitPane
             split="vertical"
             minSize={100}
@@ -14,7 +14,7 @@ const Dashboard = () => {
                 <Navigation />                    
                 <div className="gap">                                                     
                     <h5>Selamat Datang, Admin</h5>
-                    <p>statistik</p>
+                    <p>statistik</p>                    
                 </div>                    
             </SplitPane>        
     );

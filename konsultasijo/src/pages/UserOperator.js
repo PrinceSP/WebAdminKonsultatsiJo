@@ -3,6 +3,7 @@ import SplitPane from "react-split-pane";
 import Navigation from "../components/Navigation";
 import ImgCreateAccount from '../assets/createAccount.svg';
 import ImgDeleteUser from '../assets/deleteUser.svg';
+import { Link } from "react-router-dom";
 
 
 const UserOperator = () => {
@@ -25,8 +26,7 @@ const UserOperator = () => {
                         <li><a class="dropdown-item" href="/UserOperator">Operator</a></li>                        
                     </ul>
                 </div>
-
-                    <p className="cAkun"><img src={ImgCreateAccount} alt="CreateAccount" /> Buat Akun</p>                     
+                <Link className="nav-link text-white mb-3" to="/createOperator"><p className="cAkun"><img src={ImgCreateAccount} alt="CreateAccount" /> Buat Akun</p></Link>                                         
                     
                     <table class="table table-hover me-5">
                         <thead>

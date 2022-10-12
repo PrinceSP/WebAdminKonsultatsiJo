@@ -46,9 +46,7 @@ const News = () => {
                 </div>                                 */}
 
 
-
-
-                {/* <div className="newsWrapper">
+                <div className="newsWrapper">
                     
                     <SplitPane 
                     split="vertical"
@@ -70,7 +68,44 @@ const News = () => {
                     <img src="https://akcdn.detik.net.id/community/media/visual/2022/10/05/nasib-brigjen-hendra-dari-berseragam-polri-hingga-rompi-tahanan-1_169.jpeg?w=700&q=90" alt="News" />
                     </SplitPane>
                                     
-                </div>                                                 */}
+                </div>         
+
+                 <div className="newsWrapper">
+                    
+                    <SplitPane 
+                    split="vertical"
+                    minSize={560}
+                    >
+                    <p>terjadi pembantaian pes di universitas klabat, diduga karena dendam dihina terus menerus</p>
+                    <img src="https://akcdn.detik.net.id/community/media/visual/2022/10/05/nasib-brigjen-hendra-dari-berseragam-polri-hingga-rompi-tahanan-1_169.jpeg?w=700&q=90" alt="News" />
+                    </SplitPane>
+                                    
+                </div>         
+
+                 <div className="newsWrapper">
+                    
+                    <SplitPane 
+                    split="vertical"
+                    minSize={560}
+                    >
+                    <p>terjadi pembantaian pes di universitas klabat, diduga karena dendam dihina terus menerus</p>
+                    <img src="https://akcdn.detik.net.id/community/media/visual/2022/10/05/nasib-brigjen-hendra-dari-berseragam-polri-hingga-rompi-tahanan-1_169.jpeg?w=700&q=90" alt="News" />
+                    </SplitPane>
+                                    
+                </div>         
+
+                 <div className="newsWrapper">
+                    
+                    <SplitPane 
+                    split="vertical"
+                    minSize={560}
+                    >
+                    <p>terjadi pembantaian pes di universitas klabat, diduga karena dendam dihina terus menerus</p>
+                    <img src="https://akcdn.detik.net.id/community/media/visual/2022/10/05/nasib-brigjen-hendra-dari-berseragam-polri-hingga-rompi-tahanan-1_169.jpeg?w=700&q=90" alt="News" />
+                    </SplitPane>
+                                    
+                </div>         
+                                                       
                 </div>                
             </SplitPane>
         </>

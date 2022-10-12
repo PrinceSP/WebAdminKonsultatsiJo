@@ -5,6 +5,7 @@ import News from "./pages/News";
 import UserClient from "./pages/UserClient";
 import UserOperator from "./pages/UserOperator";
 import ProdukHukum from "./pages/ProdukHukum";
+import CreateOperator from "./pages/CreateOperator";
 
 const App = () => {
     return (
@@ -14,6 +15,7 @@ const App = () => {
             <Route path="/userOperator" element={<UserOperator />} />
             <Route path="/news" element={<News />} />
             <Route path="/produkHukum" element={<ProdukHukum />} />
+            <Route path="/createOperator" element={<CreateOperator />} />
         </Routes>
     );
 }
