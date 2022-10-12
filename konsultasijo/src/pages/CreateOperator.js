@@ -2,6 +2,7 @@ import React from "react";
 import SplitPane from "react-split-pane";
 import Navigation from "../components/Navigation";
 import { Link } from "react-router-dom";
+import '../assets/button.css'
 
 
 const CreateOperator = () => {
@@ -34,6 +35,9 @@ const CreateOperator = () => {
                     <div class="input-group flex-nowrap mb-2">
                     <input type="text" class="form-control" placeholder="Masukan Judul"/>                
                     </div>
+
+                    {/* button */}                    
+                    <button className="buttonSubmit" type="submit">Posting</button>                    
 
                 </div>                
             </SplitPane>
