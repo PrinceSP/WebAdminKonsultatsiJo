@@ -4,19 +4,22 @@ import SplitPane from "react-split-pane";
 import '../assets/gap.css';
 import '../assets/styles.css';
 
+const split={
+    display: 'flex',
+    flexDirection: 'row',   
+}
+
 const Dashboard = () => {
     return(        
-            <SplitPane
-            split="vertical"
-            minSize={100}
-            defaultSize={230}
-            >
+            <>
+            <div style={split}>
                 <Navigation />                    
                 <div className="gap">                                                     
                     <h5>Selamat Datang, Admin</h5>
                     <p>statistik</p>                    
-                </div>                    
-            </SplitPane>        
+                </div>                                
+            </div>
+            </>
     );
 }
 
