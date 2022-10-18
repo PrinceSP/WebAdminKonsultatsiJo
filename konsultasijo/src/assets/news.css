@@ -1,10 +1,27 @@
- .newsWrapper img{
+
+ .wrapper{
+   margin-left: 1%;
+   margin-right: 1%;      
+ }
+ .newsWrapper{
+   margin-bottom: 20px;   
+   background-color: #F4F4F4;
+   padding: 15px;
+   border-radius: 10px;
+ }
+ .newsWrapper img.imgberita{
+   margin-left: 30%;
     width: 100px;
     height: 100px;    
  }
+ .newsWrapper img.imgbutton{
+   margin-left: 1%;
+   justify-content: end;    
+   align-items: end;      
+ }
  .newsWrapper p {    
-    margin-left: 21px;
-    margin-right: 8px;
+    /* margin-left: 20px;
+    margin-right: 8px; */
     color: black;
     font-weight: bold;
  }
