@@ -25,11 +25,11 @@ const Navigation = () => {
                         <Link className="nav-link itemDashboard" to="/userClient"> <img src={ImgUser} alt="User" /> User</Link>                       
                         <Link className="nav-link itemDashboard" to="/news"><img src={ImgNews} alt="News" /> News</Link>       
                         <Link className="nav-link itemDashboard" to="/produkHukum"><img src={ImgProdukHukum} alt="Produk Hukum" /> Produk Hukum</Link>                    
-                        <Link className="nav-link itemDashboard" to="/"><img src={ImgSignOut} alt="Keluar" /> Keluar</Link>                                            
+                        <Link className="nav-link itemDashboard" to="/signIn"><img src={ImgSignOut} alt="Keluar" /> Keluar</Link>                                            
                     </div>
-                </div>                
-            </nav>        
-        
+                </div>
+            </nav>
+
     );
 }
 
