@@ -4,14 +4,14 @@ import {Dashboard,News,UserClient,UserOperator,ProdukHukum,CreateOperator,SignIn
 
 const Router = (props) => {
   return (
-    <Routes>
-      <Route path="/" element={<Dashboard />} />
+    <Routes>      
+      <Route path="/" element={<SignIn />} />
+      <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/userClient" element={<UserClient />} />
       <Route path="/userOperator" element={<UserOperator />} />
       <Route path="/news" element={<News />} />
       <Route path="/produkHukum" element={<ProdukHukum />} />
-      <Route path="/createOperator" element={<CreateOperator />} />
-      <Route path="/signIn" element={<SignIn />} />
+      <Route path="/createOperator" element={<CreateOperator />} />      
     </Routes>
   )
 }
