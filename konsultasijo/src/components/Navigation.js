@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import '../assets/navigation.css';
 import ImgDashboard from '../assets/Home.png';
 import ImgUser from '../assets/user.svg';
@@ -15,17 +15,22 @@ const styles={
     width: '20%',
 };
 
-const Navigation = () => {
-    return(       
-        
-            <nav className="navbar navbar-expand-lg" style={styles}>                
-                <div className="dashboardNav">                           
-                    <div>                        
-                        <Link className="nav-link itemDashboard topDashboard" aria-current="page" to="/dashboard"><img src={ImgDashboard} alt="Dashboard" /> Dashboard</Link>
-                        <Link className="nav-link itemDashboard" to="/userClient"> <img src={ImgUser} alt="User" /> User</Link>                       
-                        <Link className="nav-link itemDashboard" to="/news"><img src={ImgNews} alt="News" /> News</Link>       
-                        <Link className="nav-link itemDashboard" to="/produkHukum"><img src={ImgProdukHukum} alt="Produk Hukum" /> Produk Hukum</Link>                    
-                        <Link className="nav-link itemDashboard" to="/signIn"><img src={ImgSignOut} alt="Keluar" /> Keluar</Link>                                            
+const Navigation = ({active}) => {
+  const history = useNavigate();
+
+    return(
+
+            <nav className="navbar navbar-expand-lg" style={styles}>
+                <div className="dashboardNav">
+                    <div>
+                        <Link className="nav-link itemDashboard" aria-current="page" to="/"><img src={ImgDashboard} alt="Dashboard" /> Dashboard</Link>
+                        <Link className="nav-link itemDashboard" to="/userClient"> <img src={ImgUser} alt="User" /> User</Link>
+                        <Link className="nav-link itemDashboard" to="/news"><img src={ImgNews} alt="News" /> News</Link>
+                        <Link className="nav-link itemDashboard" to="/produkHukum"><img src={ImgProdukHukum} alt="Produk Hukum" /> Produk Hukum</Link>
+                        <Link className="nav-link itemDashboard" onClick={()=>{
+                            window.localStorage.removeItem("user")
+                            history.push("/login")
+                          }}><img src={ImgSignOut} alt="Keluar" /> Keluar</Link>
                     </div>
                 </div>
             </nav>

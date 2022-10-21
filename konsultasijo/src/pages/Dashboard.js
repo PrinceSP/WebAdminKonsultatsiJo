@@ -12,17 +12,15 @@ const split={
 
 const Dashboard = () => {
   const {user} = useContext(AuthContext)
-    console.log(user);
+    // console.log(user);
     return(
-            <>
-            <div style={split}>
-                <Navigation />
-                <div className="gap">
-                    <h5>Selamat Datang, {user.name}</h5>
-                    <p>statistik</p>
-                </div>
-            </div>
-            </>
+      <div style={split}>
+        <Navigation />
+        <div className="gap">
+          <h5>Selamat Datang, Admin {user.name}</h5>
+          <p>statistik</p>
+        </div>
+      </div>
     );
 }
 
