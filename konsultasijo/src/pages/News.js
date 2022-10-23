@@ -1,14 +1,30 @@
-import React from "react";
+import React,{useRef} from "react";
 // import SplitPane from "react-split-pane";
 import Navigation from "../components/Navigation";
 import '../assets/news.css';
 import ImgDeleteUser from '../assets/deleteUser.svg';
+import { v4 as uuidv4 } from 'uuid';
+import { getDatabase, ref,set } from "firebase/database";
+import app from '../configs/firebase'
 
 const split={
     display: 'flex',
     flexDirection: 'row',
 }
 const News = () => {
+  const judul = useRef('')
+  const link = useRef('')
+
+  const datas={
+    id:uuidv4(),
+    judul:judul.current.value,
+    link:link.current.value,
+  }
+
+  function writeUserData() {
+    const db = getDatabase(app);
+    set(ref(db, 'news/'+datas.id), datas);
+  }
     return(
         <>
             <div style={split}>
@@ -17,16 +33,16 @@ const News = () => {
 
                 {/* Masukan Judul */}
                 <div class="input-group flex-nowrap mb-2" style={{display: 'flex',}}>
-                <input type="text" class="form-control" placeholder="Masukan Judul"/>
+                <input type="text" class="form-control" placeholder="Masukan Judul" ref={judul}/>
                 </div>
 
                 {/* Masukan Link */}
                 <div class="input-group flex-nowrap mb-2">
-                <input type="text" class="form-control" placeholder="Masukan Link"/>
+                <input type="text" class="form-control" placeholder="Masukan Link" ref={link}/>
                 </div>
 
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-danger mb-3 form-control">Posting</button>
+                    <button type="submit" class="btn btn-danger mb-3 form-control" onClick={writeUserData}>Posting</button>
                 </div>
 
                 <div className="wrapper">
