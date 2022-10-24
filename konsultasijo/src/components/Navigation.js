@@ -27,9 +27,9 @@ const Navigation = ({active}) => {
                         <Link className="nav-link itemDashboard" to="/userClient"> <img src={ImgUser} alt="User" /> User</Link>
                         <Link className="nav-link itemDashboard" to="/news"><img src={ImgNews} alt="News" /> News</Link>
                         <Link className="nav-link itemDashboard" to="/produkHukum"><img src={ImgProdukHukum} alt="Produk Hukum" /> Produk Hukum</Link>
-                        <Link className="nav-link itemDashboard" onClick={()=>{
+                        <Link className="nav-link itemDashboard" to="/signIn" onClick={()=>{
                             window.localStorage.removeItem("user")
-                            history.push("/login")
+                            history.push("/")
                           }}><img src={ImgSignOut} alt="Keluar" /> Keluar</Link>
                     </div>
                 </div>
