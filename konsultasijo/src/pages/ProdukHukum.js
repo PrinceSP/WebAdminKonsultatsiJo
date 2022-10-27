@@ -3,7 +3,7 @@ import Navigation from "../components/Navigation";
 import { v4 as uuidv4 } from 'uuid';
 import '../assets/gap.css';
 import ImgDeleteUser from '../assets/deleteUser.svg';
-import { getDatabase, ref as databaseRef,set,onValue } from "firebase/database";
+import { getDatabase, ref as databaseRef,set,onValue,remove } from "firebase/database";
 import { getStorage, ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import app from '../configs/firebase'
 
@@ -84,6 +84,14 @@ const ProdukHukum = () => {
       setPHukum(Object.values(snapshot.val()));
     });
   }
+
+  const deletePhukum = (item)=> {
+    const db = getDatabase(app)
+    const dbRef = databaseRef(db,`phukum/${item.id}`);
+    remove(dbRef)
+    .then(alert("Product deleted."))
+    .catch((error) => console.error(false));
+  }
   useEffect(()=>{
     getUsers()
   },[])
@@ -143,7 +151,7 @@ const ProdukHukum = () => {
                       <td>{item.judul}</td>
                       <td>{item.jenis}</td>
                       <td>PDF</td>
-                      <td type="button" onClick={()=> alert('test')}><img src={ImgDeleteUser} alt="DeleteAccount" /></td>
+                      <td type="button" onClick={()=>deletePhukum(item)}><img src={ImgDeleteUser} alt="DeleteAccount" /></td>
                     </tr>
                   ))}
 

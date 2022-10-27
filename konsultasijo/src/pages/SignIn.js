@@ -1,4 +1,4 @@
-import React,{useContext,useRef} from "react";
+import React,{useContext,useRef,useState} from "react";
 import { getDatabase, ref, child, get } from "firebase/database";
 import app from '../configs/firebase'
 import {AuthContext} from '../context/AuthContext'
@@ -7,6 +7,7 @@ import '../assets/signIn.css'
 const SignIn = ({navigation}) => {
   const username = useRef('')
   const password = useRef('')
+  const [message,setMessage] = useState(null)
   const {isFetching,dispatch} = useContext(AuthContext)
 
   const writeUserData = (e)=>{
@@ -20,16 +21,24 @@ const SignIn = ({navigation}) => {
       if (snapshot.exists()) {
         let userData = Object.values(snapshot.val());
         userData.filter((item)=>{
-          // console.log(username.current.value);
+          if (item?.role!=='admin') {
+            console.log("Not an admin!");
+            setMessage("Not an admin!");
+            return false;
+          }
           if(item.name === username?.current?.value && item.password === password?.current?.value){
             console.log(item);
             dispatch({ type: "LOGIN_SUCCESS", payload: item });
             return true
           } else{
             console.log('Incorrect email or password!')
+            setMessage('Incorrect email or password!')
             return false
           }
         })
+        setTimeout(()=>{
+          setMessage(null);
+        },2000)
       } else {
         console.log("No data available");
         dispatch({type:"LOGIN_FAILURE", payload: null})
@@ -44,6 +53,7 @@ const SignIn = ({navigation}) => {
       <div style={{display:'flex',flexDirection:'column',width:"100%",height:"100vh",alignItems:'center',justifyContent:'center',backgroundColor:"#0085FA"}}>
         <div style={{display:'flex',flexDirection:'column',width:"30%",alignItems:'center',backgroundColor:"#fff",borderRadius:20,padding:'35px 25px'}}>
           <h1>MASUK</h1>
+          {message ? <p>{message}</p> : null}
           <form  style={{display:'flex',flexDirection:'column',width:"100%"}} className="mt-5">
             <label>Username</label>
             <input style={{borderRadius:5,border:'1px solid #000',height:38}} className="mb-3" name="Username" ref={username} type="text" required/>
