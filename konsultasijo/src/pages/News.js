@@ -3,7 +3,7 @@ import Navigation from "../components/Navigation";
 import '../assets/news.css';
 import ImgDeleteUser from '../assets/deleteUser.svg';
 import { v4 as uuidv4 } from 'uuid';
-import { getDatabase, ref as databaseRef,set,onValue } from "firebase/database";
+import { getDatabase, ref as databaseRef,set,onValue,remove} from "firebase/database";
 import { getStorage, ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import app from '../configs/firebase'
 
@@ -57,7 +57,7 @@ const News = () => {
             image:downloadURL
           }
         const db = getDatabase(app);
-            set(databaseRef(db, 'news/'+datas.id), datas);
+        set(databaseRef(db, 'news/'+datas.id), datas);
         });
         // setFile(null)
         // setImgUrl(null)
@@ -77,6 +77,15 @@ const News = () => {
       setNews(Object.values(snapshot.val()));
     });
   }
+
+  const deleteNews = (item)=> {
+    const db = getDatabase(app)
+    const dbRef = databaseRef(db,`news/${item.id}`);
+    remove(dbRef)
+    .then(alert("news deleted."))
+    .catch((error) => console.error(false));
+  }
+
   useEffect(()=>{
     GetNews()
   },[])
@@ -108,11 +117,14 @@ const News = () => {
           <div className="wrapper">
               {news.map((item,index)=>(
                 <div key={index} className="newsWrapper" style={{display: 'flex'}}>
-                    <p>{item.judul}</p>
+                    <div>
+                      <p>{item.judul}</p>
+                      <a href={item.link} target="_blank">Link berita</a>
+                    </div>
                     <a href={item.image} rel="noopener noreferrer" target="_blank">
                       <img  src={item.image} alt="News" className="imgberita" target="_blank"/>
                     </a>
-                    <img className="imgbutton" style={{}} type="button" onClick={()=> alert('testnews')} src={ImgDeleteUser} alt="DeleteAccount" />
+                    <img className="imgbutton" style={{}} type="button" onClick={()=>deleteNews(item)} src={ImgDeleteUser} alt="DeleteAccount" />
                 </div>
               ))}
           </div>
