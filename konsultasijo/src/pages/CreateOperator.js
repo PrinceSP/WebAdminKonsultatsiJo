@@ -1,4 +1,4 @@
-import React,{useRef}  from "react";
+import React,{useRef,useState}  from "react";
 import SplitPane from "react-split-pane";
 import Navigation from "../components/Navigation";
 import { Link } from "react-router-dom";
@@ -13,21 +13,30 @@ const split={
 }
 
 const CreateOperator = () => {
-  const fullname = useRef('')
-  const username = useRef('')
-  const password = useRef('')
+  const [fullname,setfullname] = useState('')
+  const [username,setusername] = useState('')
+  const [password,setpassword] = useState('')
+
 
   const datas={
     id:uuidv4(),
-    fullname:fullname.current.value,
-    username:username.current.value,
-    password:password.current.value,
+    fullname:fullname,
+    username:username,
+    password:password,
     role:"operator"
   }
 
-  function writeUserData(userId, name, email, imageUrl) {
+  function writeUserData(datas) {
+    console.log(fullname,username,password);
     const db = getDatabase(app);
-    set(ref(db, 'users/'+datas.id), datas);
+    set(ref(db, 'users/'+datas.id), datas).then(()=>{
+      // fullname.current.value = ""
+      // username.current.value = ""
+      // password.current.value = ""
+      setfullname('')
+      setusername('')
+      setpassword('')
+    })
   }
 
     return(
@@ -41,23 +50,23 @@ const CreateOperator = () => {
                     {/* Masukan Judul */}
                     <p>Nama</p>
                     <div class="input-group flex-nowrap mb-2">
-                    <input type="text" name="fullname" class="form-control" ref={fullname} placeholder="Masukan Nama" required/>
+                    <input type="text" name="fullname" class="form-control" value={fullname} onChange={e=>setfullname(e.target.value)} placeholder="Masukan Nama" required/>
                     </div>
 
                     {/* Masukan Judul */}
                     <p>Nama Pengguna</p>
                     <div class="input-group flex-nowrap mb-2">
-                    <input type="text" name="username" class="form-control" ref={username} placeholder="Masukan Nama Pengguna" required/>
+                    <input type="text" name="username" class="form-control" value={username} onChange={e=>setusername(e.target.value)} placeholder="Masukan Nama Pengguna" required/>
                     </div>
 
                     {/* Masukan Judul */}
                     <p>Kata Sandi</p>
                     <div class="input-group flex-nowrap mb-2">
-                    <input type="text" name="password" class="form-control" ref={password} placeholder="Masukan Kata sandi" required/>
+                    <input type="text" name="password" class="form-control" value={password} onChange={e=>setpassword(e.target.value)} placeholder="Masukan Kata sandi" required/>
                     </div>
 
                     {/* button */}
-                    <button className="buttonSubmit" type="submit" onClick={writeUserData}>Posting</button>
+                    <button className="buttonSubmit" type="submit" onClick={()=>writeUserData(datas)}>Posting</button>
 
                 </div>
             </div>

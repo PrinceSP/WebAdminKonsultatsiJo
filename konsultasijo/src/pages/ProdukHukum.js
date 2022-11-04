@@ -6,6 +6,7 @@ import ImgDeleteUser from '../assets/deleteUser.svg';
 import { getDatabase, ref as databaseRef,set,onValue,remove } from "firebase/database";
 import { getStorage, ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import app from '../configs/firebase'
+import moment from 'moment-timezone';
 
 const split={
     display: 'flex',
@@ -20,7 +21,16 @@ const ProdukHukum = () => {
   const [file,setFile] = useState(null)
   const [percent, setPercent] = useState(0);
   const [phukum, setPHukum] = useState([]);
-  // console.log(fileUrl);
+  const [search,setSearch] = useState('')
+
+  const searchItem = (value,query)=>{
+    const keys = ['tahun','nomor', 'judul','jenis']
+    return value?.filter(item=>
+      keys.some(key=>item[key].toLowerCase().includes(query))
+    )
+  }
+
+  const searchData = searchItem(phukum,search)
 
   const submit = ()=>{
 
@@ -61,7 +71,8 @@ const ProdukHukum = () => {
             tahun:tahun.current.value,
             nomor:nomor.current.value,
             jenis:jenis.current.value,
-            file:downloadURL
+            file:downloadURL,
+            timeStamps:moment().format('')
           }
           const db = getDatabase(app)
           set(databaseRef(db, 'phukum/'+datas.id), datas);
@@ -81,7 +92,12 @@ const ProdukHukum = () => {
     const db = getDatabase(app)
     const dbRef = databaseRef(db,'phukum/');
     onValue(dbRef, (snapshot) => {
-      setPHukum(Object.values(snapshot.val()));
+      if (snapshot.val()==null) {
+        console.log(false);
+        return false
+      }
+      const data = Object.values(snapshot.val())
+      setPHukum(data.sort((a,b)=>b.timeStamps < a.timeStamps));
     });
   }
 
@@ -131,6 +147,10 @@ const ProdukHukum = () => {
 
           <p>{percent} % done</p>
 
+          <div class="input-group flex-nowrap mb-2">
+            <input type="text" class="form-control" placeholder="Cari disini" value={search} onChange={(e)=>setSearch(e.target.value)}/>
+          </div>
+
           <table class="table table-hover me-5">
               <thead>
                   <tr>
@@ -144,7 +164,7 @@ const ProdukHukum = () => {
               </thead>
               <tbody>
 
-                  {phukum.map((item,index)=>(
+                  {searchData.map((item,index)=>(
                     <tr key={index}>
                       <td>{item.tahun}</td>
                       <td>{item.nomor}</td>

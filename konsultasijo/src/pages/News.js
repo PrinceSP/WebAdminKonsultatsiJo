@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getDatabase, ref as databaseRef,set,onValue,remove} from "firebase/database";
 import { getStorage, ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import app from '../configs/firebase'
+import moment from 'moment-timezone';
 
 const split={
     display: 'flex',
@@ -54,13 +55,12 @@ const News = () => {
             id:uuidv4(),
             judul:judul.current.value,
             link:link.current.value,
-            image:downloadURL
+            image:downloadURL,
+            timeStamps:moment().format('')
           }
         const db = getDatabase(app);
         set(databaseRef(db, 'news/'+datas.id), datas);
         });
-        // setFile(null)
-        // setImgUrl(null)
       }
     );
   }
@@ -74,7 +74,12 @@ const News = () => {
     const db = getDatabase(app)
     const dbRef = databaseRef(db,'news/');
     onValue(dbRef, (snapshot) => {
-      setNews(Object.values(snapshot.val()));
+      if (snapshot.val()==null) {
+        console.log(false);
+        return false
+      }
+      const data = Object.values(snapshot.val())
+      setNews(data.sort((a,b)=> b.timeStamps < a.timeStamps ? -1 : 1));
     });
   }
 
