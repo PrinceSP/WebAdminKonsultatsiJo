@@ -6,6 +6,7 @@ import ImgDeleteUser from '../assets/deleteUser.svg';
 import { getDatabase, ref as databaseRef,set,onValue,remove } from "firebase/database";
 import { getStorage, ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import app from '../configs/firebase'
+import moment from 'moment-timezone';
 
 const split={
     display: 'flex',
@@ -61,7 +62,8 @@ const ProdukHukum = () => {
             tahun:tahun.current.value,
             nomor:nomor.current.value,
             jenis:jenis.current.value,
-            file:downloadURL
+            file:downloadURL,
+            timeStamps:moment().format('')
           }
           const db = getDatabase(app)
           set(databaseRef(db, 'phukum/'+datas.id), datas);
@@ -81,7 +83,12 @@ const ProdukHukum = () => {
     const db = getDatabase(app)
     const dbRef = databaseRef(db,'phukum/');
     onValue(dbRef, (snapshot) => {
-      setPHukum(Object.values(snapshot.val()));
+      if (snapshot.val()==null) {
+        console.log(false);
+        return false
+      }
+      const data = Object.values(snapshot.val())
+      setPHukum(data.sort((a,b)=>b.timeStamps < a.timeStamps));
     });
   }
 
