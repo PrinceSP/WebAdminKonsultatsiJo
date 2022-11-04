@@ -21,7 +21,16 @@ const ProdukHukum = () => {
   const [file,setFile] = useState(null)
   const [percent, setPercent] = useState(0);
   const [phukum, setPHukum] = useState([]);
-  // console.log(fileUrl);
+  const [search,setSearch] = useState('')
+
+  const searchItem = (value,query)=>{
+    const keys = ['tahun','nomor', 'judul','jenis']
+    return value?.filter(item=>
+      keys.some(key=>item[key].toLowerCase().includes(query))
+    )
+  }
+
+  const searchData = searchItem(phukum,search)
 
   const submit = ()=>{
 
@@ -138,6 +147,10 @@ const ProdukHukum = () => {
 
           <p>{percent} % done</p>
 
+          <div class="input-group flex-nowrap mb-2">
+            <input type="text" class="form-control" placeholder="Cari disini" value={search} onChange={(e)=>setSearch(e.target.value)}/>
+          </div>
+
           <table class="table table-hover me-5">
               <thead>
                   <tr>
@@ -151,7 +164,7 @@ const ProdukHukum = () => {
               </thead>
               <tbody>
 
-                  {phukum.map((item,index)=>(
+                  {searchData.map((item,index)=>(
                     <tr key={index}>
                       <td>{item.tahun}</td>
                       <td>{item.nomor}</td>
