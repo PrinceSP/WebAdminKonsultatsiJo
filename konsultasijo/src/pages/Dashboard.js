@@ -1,4 +1,4 @@
-import React,{useContext,useState,useEffect} from "react";
+import React,{useContext} from "react";
 import Navigation from "../components/Navigation";
 import '../assets/gap.css';
 import '../assets/styles.css';

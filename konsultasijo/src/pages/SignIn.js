@@ -8,7 +8,7 @@ const SignIn = ({navigation}) => {
   const username = useRef('')
   const password = useRef('')
   const [message,setMessage] = useState(null)
-  const {isFetching,dispatch} = useContext(AuthContext)
+  const {dispatch} = useContext(AuthContext)
 
   const writeUserData = (e)=>{
     e.preventDefault()

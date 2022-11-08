@@ -4,7 +4,7 @@ import Navigation from "../components/Navigation";
 import ImgCreateAccount from '../assets/createAccount.svg';
 import ImgDeleteUser from '../assets/deleteUser.svg';
 import { Link } from "react-router-dom";
-import { getDatabase, ref, child,onValue } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
 import app from '../configs/firebase'
 
 const split={
@@ -18,7 +18,7 @@ const UserOperator = () => {
     const db = getDatabase(app)
     const dbRef = ref(db,'users/');
     onValue(dbRef, (snapshot) => {
-      if (snapshot.val()==null) {
+      if (snapshot.val()===null) {
         return false
       }
       setUsers(Object.values(snapshot.val()));
@@ -57,7 +57,7 @@ const UserOperator = () => {
                         <tbody>
 
                           {users.map((item,index)=>(
-                            item.role=="operator" ? <tr key={index}>
+                            item.role==="operator" ? <tr key={index}>
                               <td>{item.fullname}</td>
                               <td type="button" onClick={()=> alert('test')}><img src={ImgDeleteUser} alt="DeleteAccount" /></td>
                             </tr> : null

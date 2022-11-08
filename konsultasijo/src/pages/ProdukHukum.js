@@ -92,12 +92,13 @@ const ProdukHukum = () => {
     const db = getDatabase(app)
     const dbRef = databaseRef(db,'phukum/');
     onValue(dbRef, (snapshot) => {
-      if (snapshot.val()==null) {
-        console.log(false);
+
+      if (snapshot.val() === (null||undefined||[])) {
         return false
+      } else{
+        const data = Object.values(snapshot.val()!== null ? snapshot.val() : '')
+        setPHukum(data.length>0 ? data.sort((a,b)=> b.timeStamps < a.timeStamps ? -1 : 1) : [])
       }
-      const data = Object.values(snapshot.val())
-      setPHukum(data.sort((a,b)=>b.timeStamps < a.timeStamps));
     });
   }
 

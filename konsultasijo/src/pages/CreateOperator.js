@@ -1,7 +1,5 @@
-import React,{useRef,useState}  from "react";
-import SplitPane from "react-split-pane";
+import React,{useState}  from "react";
 import Navigation from "../components/Navigation";
-import { Link } from "react-router-dom";
 import '../assets/button.css'
 import { v4 as uuidv4 } from 'uuid';
 import { getDatabase, ref,set } from "firebase/database";

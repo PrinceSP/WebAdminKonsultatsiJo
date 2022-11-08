@@ -1,10 +1,9 @@
 import React,{useState,useEffect} from "react";
-import SplitPane from "react-split-pane";
 import Navigation from "../components/Navigation";
 import ImgCreateAccount from '../assets/createAccount.svg';
 import ImgDeleteUser from '../assets/deleteUser.svg';
 import { Link } from "react-router-dom";
-import { getDatabase, ref, child, get,onValue } from "firebase/database";
+import { getDatabase, ref ,onValue } from "firebase/database";
 import app from '../configs/firebase'
 
 const split={
