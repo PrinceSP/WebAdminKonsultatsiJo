@@ -74,20 +74,23 @@ const News = () => {
     const db = getDatabase(app)
     const dbRef = databaseRef(db,'news/');
     onValue(dbRef, (snapshot) => {
-      if (snapshot.val()==null) {
-        console.log(false);
+
+      if (snapshot.val() === (null||undefined||[])) {
         return false
+      } else{
+        const data = Object.values(snapshot.val()!== null ? snapshot.val() : '')
+        // console.log(data.length);
+        // console.log(data);
+        setNews(data.length>0 ? data.sort((a,b)=> b.timeStamps < a.timeStamps ? -1 : 1) : [])
       }
-      const data = Object.values(snapshot.val())
-      setNews(data.sort((a,b)=> b.timeStamps < a.timeStamps ? -1 : 1));
     });
   }
 
-  const deleteNews = (item)=> {
+  const deleteNews = async(item)=> {
     const db = getDatabase(app)
-    const dbRef = databaseRef(db,`news/${item.id}`);
+    const dbRef = await databaseRef(db,`news/${item.id}`);
     remove(dbRef)
-    .then(alert("news deleted."))
+    .then(console.log("news deleted."))
     .catch((error) => console.error(false));
   }
 
@@ -124,7 +127,7 @@ const News = () => {
                 <div key={index} className="newsWrapper" style={{display: 'flex'}}>
                     <div>
                       <p>{item.judul}</p>
-                      <a href={item.link} target="_blank">Link berita</a>
+                      <a href={item.link} target="_blank" rel="noreferrer">Link berita</a>
                     </div>
                     <a href={item.image} rel="noopener noreferrer" target="_blank">
                       <img  src={item.image} alt="News" className="imgberita" target="_blank"/>
