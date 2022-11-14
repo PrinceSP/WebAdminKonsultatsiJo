@@ -13,6 +13,18 @@ const split={
 
 const UserClient = () => {
   const [users,setUsers] = useState([])
+  const [search,setSearch] = useState('')
+
+  const searchItem = (value,query)=>{
+    const keys = ['nik','name', 'id','email']
+    return value?.filter(item=>
+      keys.some(key=>item[key]?.toLowerCase().includes(query))
+      // console.log(item);
+    )
+  }
+
+  const searchData = searchItem(users,search)
+
   const getUsers = ()=>{
     const db = getDatabase(app)
     const dbRef = ref(db,'users/');
@@ -23,7 +35,7 @@ const UserClient = () => {
   useEffect(()=>{
     getUsers()
   },[])
-  console.log(users);
+  // console.log(users);
 
     return(
             <div style={split}>
@@ -43,7 +55,9 @@ const UserClient = () => {
                 </div>
 
                 <Link className="nav-link text-white mb-3" to="/createClient"><p className="cAkun"><img src={ImgCreateAccount} alt="CreateAccount" /> Buat Akun</p></Link>
-
+                  <div class="input-group flex-nowrap mb-2">
+                    <input type="text" class="form-control" placeholder="Cari berdasarkan ID, NIK, Nama, Alamat Email" value={search} onChange={(e)=>setSearch(e.target.value)}/>
+                  </div>
                     <table class="table table-hover me-5">
                         <thead>
                           <tr>
@@ -54,7 +68,7 @@ const UserClient = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {users.map((item,index)=>(
+                          {searchData.map((item,index)=>(
                             item.role==="customer" ? <tr key={index}>
                               <td>{item.nik}</td>
                               <td>{item.name}</td>

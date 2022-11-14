@@ -1,8 +1,10 @@
-import React,{useContext} from "react";
+import React,{useContext,useEffect,useState} from "react";
 import Navigation from "../components/Navigation";
 import '../assets/gap.css';
 import '../assets/styles.css';
 import { AuthContext } from "../context/AuthContext";
+import app from '../configs/firebase'
+import { getDatabase, ref ,onValue } from "firebase/database";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,6 +15,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import moment from 'moment-timezone';
 
 ChartJS.register(
   CategoryScale,
@@ -30,42 +33,57 @@ const split={
 
 const Dashboard = () => {
   const {user} = useContext(AuthContext)
+  const [categories,setCategories] = useState([])
 
-  const data = {
-          labels: [['Perkawinan','Pencurian'], ['Waris','Penganiayaan'], ['Kekeluargaan','Pembunuhan'],['Perikatan','Pencemaran Nama Baik'],['Kekayaan','Perusakan Barang'],['Perceraian','ITE'],['Pencemaran Nama Baik','Perselingkuhan'],'Pemerasan'],
-          // datasets is an array of objects where each object represents a set of data to display corresponding to the labels above. for brevity, we'll keep it at one object
-          datasets: [
-              {
-                label: 'Popularity of colours',
-                data: [55, 23, 96,11,12,13,144],
-                // you can set indiviual colors for each bar
-                backgroundColor: [
-                  "#8D2179",
-                  "#C9E265",
-                  "#E5775E",
-                  "#FFFFFF",
-                  "#E0E2E2",
-                  "#8F78C6",
-                  "#3D4C97"
-                ],
-                borderWidth: 1,
-              },{
-                label: 'Popularity of colours',
-                data: [ 23,55, 96,11,12,13,144,200],
-                // you can set indiviual colors for each bar
-                backgroundColor: [
-                  "#A3D5E0",
-                  "#29435C",
-                  "#9F3F41",
-                  "#AECFF6",
-                  "#0ACFC9",
-                  "#091C2B",
-                  "#F79764"
-                ],
-                borderWidth: 1,
-              }
-          ]
+  const labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+  const datas = categories.map((item,index,arr)=>{
+    const time = moment(item.time).format('LL')
+    const values = time.includes(labels[10]) ?  item?.value : 0
+    return values
+  })
+  let sum = 0
+
+  for (var val of datas) {
+    sum+=val
+    console.log(sum);
   }
+
+  // console.log(datas);
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: '',
+        data:datas,
+        backgroundColor: [
+          "#8D2179",
+          "#C9E265",
+          "#E5775E",
+          "#000000",
+          "#E0E2E2",
+          "#8F78C6",
+          "#3D4C97",
+          "#8D2179",
+          "#C9E265",
+          "#E5775E",
+          "#000000",
+          "#E0E2E2",
+        ],
+        borderWidth: 1,
+      }
+    ]
+  }
+    const getCategories = ()=>{
+      const db = getDatabase(app)
+      const dbRef = ref(db,'/categoriesDatas');
+      onValue(dbRef, (snapshot) => {
+        setCategories(Object.values(snapshot.val()));
+        // console.log(Object.values(snapshot.val()));
+      });
+    }
+    useEffect(()=>{
+      getCategories()
+    },[])
 
     return(
       <div style={split}>
@@ -75,6 +93,7 @@ const Dashboard = () => {
           <p>statistik</p>
             <div>
               <Bar
+                datasetIdKey='id'
                 data={data}
                 options={{
                   responsive: true,
