@@ -9,7 +9,7 @@ const SignIn = ({navigation}) => {
   const password = useRef('')
   const [message,setMessage] = useState(null)
   const {dispatch} = useContext(AuthContext)
-
+// console.log(username.current.value,password.current.value);
   const writeUserData = (e)=>{
     e.preventDefault()
     dispatch({type:"LOGIN_START"})
@@ -21,17 +21,17 @@ const SignIn = ({navigation}) => {
       if (snapshot.exists()) {
         let userData = Object.values(snapshot.val());
         userData.filter((item)=>{
-          if (item?.role!=='admin') {
-            console.log("Not an admin!");
+          // console.log(item.role);
+          if (item.role!=='admin') {
             setMessage("Not an admin!");
             return false;
           }
           if(item.name === username?.current?.value && item.password === password?.current?.value){
-            console.log(item);
+            // console.log(item);
             dispatch({ type: "LOGIN_SUCCESS", payload: item });
             return true
           } else{
-            console.log('Incorrect email or password!')
+            // console.log('Incorrect email or password!')
             setMessage('Incorrect email or password!')
             return false
           }
@@ -40,11 +40,11 @@ const SignIn = ({navigation}) => {
           setMessage(null);
         },2000)
       } else {
-        console.log("No data available");
+        // console.log("No data available");
         dispatch({type:"LOGIN_FAILURE", payload: null})
       }
     }).catch((error) => {
-      console.error(error);
+      // console.error(error);
       dispatch({type:"LOGIN_FAILURE", payload: error})
     });
   }

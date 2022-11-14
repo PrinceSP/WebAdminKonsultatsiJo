@@ -2,6 +2,10 @@
     background-color: lightblue;
  } */
  .dashboardNav {
-    color: black;    
+    color: black;
     margin-bottom: 1000%;
  }
+
+.show {
+  display:none;
+}
