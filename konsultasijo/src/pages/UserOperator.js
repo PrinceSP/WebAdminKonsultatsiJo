@@ -4,7 +4,7 @@ import Navigation from "../components/Navigation";
 import ImgCreateAccount from '../assets/createAccount.svg';
 import ImgDeleteUser from '../assets/deleteUser.svg';
 import { Link } from "react-router-dom";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, remove } from "firebase/database";
 import app from '../configs/firebase'
 
 const split={
@@ -24,6 +24,16 @@ const UserOperator = () => {
       setUsers(Object.values(snapshot.val()));
     });
   }
+
+  const deleteOperator = (item)=> {
+    const db = getDatabase(app)
+    const dbRef = ref(db,`users/${item.id}`);
+    // console.log(item);
+    remove(dbRef)
+    .then(alert("Product deleted."))
+    .catch((error) => console.error(false));
+  }
+
   useEffect(()=>{
     getUsers()
   },[])
@@ -47,19 +57,19 @@ const UserOperator = () => {
 
                     <table class="table table-hover me-5">
                         <thead>
-                            <tr>
-                            <th scope="col">Nama Pengguna</th>
-                            <th scope="col">FullName</th>
-                            <th scope="col">Email</th>
-                            <th scope="col"></th>
-                            </tr>
+                          <tr>
+                          <th scope="col">Nama Pengguna</th>
+                          <th scope="col">FullName</th>
+                          <th scope="col">Email</th>
+                          <th scope="col"></th>
+                          </tr>
                         </thead>
                         <tbody>
 
                           {users.map((item,index)=>(
                             item.role==="operator" ? <tr key={index}>
                               <td>{item.fullname}</td>
-                              <td type="button" onClick={()=> alert('test')}><img src={ImgDeleteUser} alt="DeleteAccount" /></td>
+                              <td type="button" onClick={()=> deleteOperator(item)}><img src={ImgDeleteUser} alt="DeleteAccount" /></td>
                             </tr> : null
                           ))}
                         </tbody>

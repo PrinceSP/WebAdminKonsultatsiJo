@@ -3,8 +3,9 @@ import Navigation from "../components/Navigation";
 import ImgCreateAccount from '../assets/createAccount.svg';
 import ImgDeleteUser from '../assets/deleteUser.svg';
 import { Link } from "react-router-dom";
-import { getDatabase, ref ,onValue } from "firebase/database";
+import { getDatabase, ref ,onValue, remove } from "firebase/database";
 import app from '../configs/firebase'
+// import { getDatabase, ref as ref,set,onValue,remove } from "firebase/database";
 
 const split={
     display: 'flex',
@@ -15,7 +16,7 @@ const UserClient = () => {
   const [users,setUsers] = useState([])
   const [search,setSearch] = useState('')
 
-  const searchItem = (value,query)=>{
+  let searchItem = (value,query)=>{
     const keys = ['nik','name', 'id','email']
     return value?.filter(item=>
       keys.some(key=>item[key]?.toLowerCase().includes(query))
@@ -23,7 +24,7 @@ const UserClient = () => {
     )
   }
 
-  const searchData = searchItem(users,search)
+  let searchData = searchItem(users,search)
 
   const getUsers = ()=>{
     const db = getDatabase(app)
@@ -32,6 +33,16 @@ const UserClient = () => {
       setUsers(Object.values(snapshot.val()));
     });
   }
+
+  const deleteClient = (item)=> {
+    const db = getDatabase(app)
+    const dbRef = ref(db,`users/${item.id}`);
+    // console.log(item);
+    remove(dbRef)
+    .then(alert("Product deleted."))
+    .catch((error) => console.error(false));
+  }
+
   useEffect(()=>{
     getUsers()
   },[])
@@ -73,7 +84,7 @@ const UserClient = () => {
                               <td>{item.nik}</td>
                               <td>{item.name}</td>
                               <td>{item.email}</td>
-                              <td type="button" onClick={()=> alert('test')}><img src={ImgDeleteUser} alt="DeleteAccount" /></td>
+                              <td type="button" onClick={()=> deleteClient(item)}><img src={ImgDeleteUser} alt="DeleteAccount" /></td>
                             </tr> : null
                           ))}
                         </tbody>

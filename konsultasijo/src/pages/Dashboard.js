@@ -15,7 +15,6 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import moment from 'moment-timezone';
 
 ChartJS.register(
   CategoryScale,
@@ -36,25 +35,26 @@ const Dashboard = () => {
   const [categories,setCategories] = useState([])
 
   const labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-  const datas = categories.map((item,index,arr)=>{
-    const time = moment(item.time).format('LL')
-    const values = time.includes(labels[10]) ?  item?.value : 0
-    return values
-  })
-  let sum = 0
 
-  for (var val of datas) {
-    sum+=val
-    console.log(sum);
-  }
-
-  // console.log(datas);
+  // const getProperty = categories!== null && categories!== undefined ? Object.getOwnPropertyNames(categories?.years['2022'].months) : ''
+  // console.log(getDatas);
+  console.log(categories);
+  const val = 0
+  // for (var key in getDatas) {
+  //   console.log(getDatas[key].value);
+  // }
+  // const datas = labels.map((item,index,arr)=>{
+  //   const find = item.includes(getProperty[0].slice(0,3 - 1))
+  //
+  //   return find
+  // })
+  console.log(val);
   const data = {
     labels,
     datasets: [
       {
         label: '',
-        data:datas,
+        data:[12,13,14],
         backgroundColor: [
           "#8D2179",
           "#C9E265",
@@ -73,17 +73,20 @@ const Dashboard = () => {
       }
     ]
   }
-    const getCategories = ()=>{
-      const db = getDatabase(app)
-      const dbRef = ref(db,'/categoriesDatas');
-      onValue(dbRef, (snapshot) => {
-        setCategories(Object.values(snapshot.val()));
-        // console.log(Object.values(snapshot.val()));
-      });
-    }
-    useEffect(()=>{
+  const getCategories = async()=>{
+    const db = await getDatabase(app)
+    const dbRef = await ref(db,'/categoriesDatas');
+    await onValue(dbRef, (snapshot) => {
+      setCategories((state) => [snapshot.val(),...state]);
+    });
+  }
+  useEffect(()=>{
+    let mounted = true
+    if (mounted) {
       getCategories()
-    },[])
+    }
+    return ()=>mounted=false
+  },[])
 
     return(
       <div style={split}>
