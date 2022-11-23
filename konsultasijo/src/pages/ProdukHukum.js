@@ -105,9 +105,11 @@ const ProdukHukum = () => {
   const deletePhukum = (item)=> {
     const db = getDatabase(app)
     const dbRef = databaseRef(db,`phukum/${item.id}`);
-    remove(dbRef)
-    .then(alert("Product deleted."))
-    .catch((error) => console.error(false));
+    if (window.confirm("Setuju untuk menghapus?")) {
+      remove(dbRef)
+      .then(alert("Product deleted."))
+      .catch((error) => console.error(false));
+    }
   }
   useEffect(()=>{
     getUsers()

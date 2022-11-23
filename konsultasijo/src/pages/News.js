@@ -3,7 +3,7 @@ import Navigation from "../components/Navigation";
 import '../assets/news.css';
 import ImgDeleteUser from '../assets/deleteUser.svg';
 import { v4 as uuidv4 } from 'uuid';
-import { getDatabase, ref as databaseRef,set,onValue,remove} from "firebase/database";
+import { getDatabase, ref as databaseRef,set,onValue,remove ,update} from "firebase/database";
 import { getStorage, ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import app from '../configs/firebase'
 import moment from 'moment-timezone';
@@ -86,12 +86,19 @@ const News = () => {
     });
   }
 
+  // const updateNews = async()=>{
+  //   const db = getDatabase(app)
+  //   const dbRef = await databaseRef(db,`news/${item.id}`);
+  // }
+
   const deleteNews = async(item)=> {
     const db = getDatabase(app)
     const dbRef = await databaseRef(db,`news/${item.id}`);
-    remove(dbRef)
-    .then(console.log("news deleted."))
-    .catch((error) => console.error(false));
+    if(window.confirm("Setuju untuk menghapus?")){
+      remove(dbRef)
+      .then(console.log("news deleted."))
+      .catch((error) => console.error(false));
+    }
   }
 
   useEffect(()=>{

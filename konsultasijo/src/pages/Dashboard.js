@@ -39,7 +39,7 @@ const Dashboard = () => {
   // const getProperty = categories!== null && categories!== undefined ? Object.getOwnPropertyNames(categories?.years['2022'].months) : ''
   // console.log(getDatas);
   console.log(categories);
-  const val = 0
+  // const val = 0
   // for (var key in getDatas) {
   //   console.log(getDatas[key].value);
   // }
@@ -48,7 +48,7 @@ const Dashboard = () => {
   //
   //   return find
   // })
-  console.log(val);
+  // console.log(val);
   const data = {
     labels,
     datasets: [
@@ -73,13 +73,15 @@ const Dashboard = () => {
       }
     ]
   }
-  const getCategories = async()=>{
-    const db = await getDatabase(app)
-    const dbRef = await ref(db,'/categoriesDatas');
-    await onValue(dbRef, (snapshot) => {
+
+  const getCategories = ()=>{
+    const db = getDatabase(app)
+    const dbRef = ref(db,'/categoriesDatas');
+    onValue(dbRef, (snapshot) => {
       setCategories((state) => [snapshot.val(),...state]);
     });
   }
+  
   useEffect(()=>{
     let mounted = true
     if (mounted) {
