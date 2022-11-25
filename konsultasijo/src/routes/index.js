@@ -1,6 +1,6 @@
 import React,{useContext} from "react";
 import { Routes, Route, Navigate} from "react-router-dom";
-import {Dashboard,News,UserClient,UserOperator,ProdukHukum,CreateOperator,SignIn,CreateClient} from '../pages'
+import {Dashboard,News,UserClient,UserOperator,ProdukHukum,CreateOperator,SignIn,CreateClient,Archived} from '../pages'
 import { AuthContext } from "../context/AuthContext";
 
 const Router = (props) => {
@@ -15,6 +15,7 @@ const Router = (props) => {
       <Route path="/produkHukum" element={<ProdukHukum />} />
       <Route path="/createClient" element={<CreateClient />} />
       <Route path="/createOperator" element={<CreateOperator />} />
+      <Route path="/archived" element={<Archived />} />
     </Routes>
   )
 }

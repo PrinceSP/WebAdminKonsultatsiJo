@@ -9,6 +9,7 @@ import { getDatabase, ref as databaseRef,set,onValue,remove ,update} from "fireb
 import { getStorage, ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import app from '../configs/firebase'
 import moment from 'moment-timezone';
+import { Link } from "react-router-dom";
 
 const split={
     display: 'flex',
@@ -181,6 +182,17 @@ const ProdukHukum = () => {
       remove(dbRef)
       .then(alert("Product deleted."))
       .catch((error) => console.error(false));
+      const datas={
+        id:item.id,
+        judul:item.judul,
+        tahun:item.tahun,
+        nomor:item.nomor,
+        jenis:item.jenis,
+        file:item.file,
+        timeStamps:item.timeStamps
+      }
+      const db = getDatabase(app)
+      set(databaseRef(db, 'ProductArchives/'+item.id), datas);
     }
   }
   useEffect(()=>{
@@ -220,7 +232,12 @@ const ProdukHukum = () => {
             <button type="submit" class="btn btn-danger mb-3 form-control" onClick={submit}>Posting</button>
           </div>
 
-          <p>{percent} % done</p>
+          <div>
+            <p>{percent} % done</p>
+            <Link to="/archived" class="col-auto">
+              <button type="submit" class="btn btn-primary mb-3" onClick={submit}>See Archived PH</button>
+            </Link>
+          </div>
 
           <div class="input-group flex-nowrap mb-2">
             <input type="text" class="form-control" placeholder="Cari disini" value={search} onChange={(e)=>setSearch(e.target.value)}/>

@@ -6,5 +6,6 @@ import ProdukHukum from "./ProdukHukum";
 import CreateClient from "./CreateClient";
 import CreateOperator from "./CreateOperator";
 import SignIn from "./SignIn";
+import Archived from "./ArchivedProduct";
 
-export {Dashboard,News,UserClient,UserOperator,ProdukHukum,CreateOperator,CreateClient,SignIn}
+export {Dashboard,News,UserClient,UserOperator,ProdukHukum,CreateOperator,CreateClient,SignIn,Archived}
