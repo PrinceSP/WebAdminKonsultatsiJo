@@ -40,7 +40,7 @@
   height: 100%;
   z-index: 10;
   transform: translateZ(0);
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.5);
   display:flex;
   align-items: center;
   justify-content:center;

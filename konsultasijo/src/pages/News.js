@@ -1,5 +1,4 @@
 import React,{useRef,useState,useEffect} from "react";
-import ReactDOM from 'react-dom';
 import FocusTrap from 'focus-trap-react';
 import Navigation from "../components/Navigation";
 import '../assets/news.css';
@@ -16,17 +15,29 @@ const split={
     flexDirection: 'row',
 }
 
-const Form = ({ onSubmit }) => {
+const Form = ({ item }) => {
+  const judul = useRef('')
+  const link = useRef('')
+
+  const updateNews = (item)=>{
+    const db = getDatabase(app)
+    const dbRef = databaseRef(db,`news/${item.id}`);
+    update(dbRef,{
+      judul:judul.current.value,
+      link:link.current.value
+    }).then(()=>console.log('success'))
+  }
+
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={()=>updateNews(item)}>
       <div className="form-group">
         <label htmlFor="name">Judul</label>
-        <input className="form-control" id="judul" placeholder="Terjadi kecelakaan di benua afrika"/>
+        <input ref={judul} className="form-control" id="judul" placeholder="Terjadi kecelakaan di benua afrika"/>
       </div>
       <div className="form-group">
         <label htmlFor="email">Link</label>
         <input
-          type="text"
+          type="text" ref={link}
           className="form-control"
           id="link"
           placeholder="https://ec.europa.eu/commission/presscorner/detail/en/MEX_22_7152"
@@ -47,10 +58,12 @@ const News = () => {
   const [file,setFile] = useState(null)
   const [percent, setPercent] = useState(0);
   const [news,setNews] = useState([])
+  const [items,setItems] = useState()
   const [showModal,setShowModal] = useState(false)
 
-  const showModals = ()=>{
+  const showModals = (item)=>{
     setShowModal(true)
+    setItems(item)
   }
 
   const closeModal = ()=>{
@@ -62,6 +75,14 @@ const News = () => {
       closeModal();
     }
   };
+
+  const onClickOutside=(e)=>{
+    if(e.target.tagName === "ASIDE") {
+      closeModal()
+    } else {
+      return
+    }
+  }
 
   const writeUserData = ()=>{
     const storage = getStorage(app)
@@ -130,14 +151,6 @@ const News = () => {
     });
   }
 
-  const updateNews = (item)=>{
-    const db = getDatabase(app)
-    const dbRef = databaseRef(db,`news/${item.id}`);
-    update(dbRef,{
-      link,judul
-    }).then(()=>console.log('success'))
-  }
-
   const deleteNews = async(item)=> {
     const db = getDatabase(app)
     const dbRef = await databaseRef(db,`news/${item.id}`);
@@ -177,17 +190,17 @@ const News = () => {
           </div>
           <p>{percent} % done</p>
           <div className="wrapper">
-              {news.map((item,index)=>(
-                <div key={index} className="newsWrapper" style={{display: 'flex'}}>
-                    <div>
-                      <p>{item.judul}</p>
-                      <a href={item.link} target="_blank" rel="noreferrer">Link berita</a>
-                    </div>
-                    <a href={item.image} rel="noopener noreferrer" target="_blank">
-                      <img  src={item.image} alt="News" className="imgberita" target="_blank"/>
-                    </a>
-                    <img className="imgbutton" type="button" onClick={()=>deleteNews(item)} src={ImgDeleteUser} alt="DeleteNews" />
-                    <img className="imgbutton" type="button" onClick={showModals} src={Edit} alt="EditNews" />
+              {news.map((item)=>(
+                <div key={item.id} className="newsWrapper" style={{display: 'flex'}}>
+                  <div>
+                    <p>{item.judul}</p>
+                    <a href={item.link} target="_blank" rel="noreferrer">Link berita</a>
+                  </div>
+                  <a href={item.image} rel="noopener noreferrer" target="_blank">
+                    <img  src={item.image} alt="News" className="imgberita" target="_blank"/>
+                  </a>
+                  <img className="imgbutton" type="button" onClick={()=>deleteNews(item)} src={ImgDeleteUser} alt="DeleteNews" />
+                  <img className="imgbutton" type="button" onClick={()=>showModals(item)} src={Edit} alt="EditNews" />
                 </div>
               ))}
           </div>
@@ -201,6 +214,7 @@ const News = () => {
               aria-modal="true"
               className="modal-cover"
               onKeyDown={onKeyDown}
+              onClick={onClickOutside}
             >
               <button
                 aria-label="Close Modal"
@@ -216,7 +230,7 @@ const News = () => {
                 </svg>
               </button>
               <div className="modal-area">
-                <Form/>
+                <Form item={items}/>
               </div>
             </aside>
           </FocusTrap> : null}
