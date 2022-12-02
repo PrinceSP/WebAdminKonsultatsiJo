@@ -1,4 +1,4 @@
-import React,{useContext,useEffect,useState} from "react";
+import React,{useContext,useMemo,useState} from "react";
 import Navigation from "../components/Navigation";
 import '../assets/gap.css';
 import '../assets/styles.css';
@@ -32,21 +32,10 @@ const split={
 
 const Dashboard = () => {
   const {user} = useContext(AuthContext)
-  const [categories,setCategories] = useState([])
+  const [categories,setCategories] = useState()
 
   const labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
-  // console.log(getDatas);
-  // console.log(categories)  // const val = 0
-  // for (var key in getDatas) {
-  //   console.log(getDatas[key].value);
-  // }
-  // const datas = labels.map((item,index,arr)=>{
-  //   const find = item.includes(getProperty[0].slice(0,3 - 1))
-  //
-  //   return find
-  // })
-  // console.log(val);
   const data = {
     labels,
     datasets: [
@@ -72,25 +61,23 @@ const Dashboard = () => {
     ]
   }
 
-  const getCategories = async()=>{
-    try {
-      const db = await getDatabase(app)
-      const dbRef = await ref(db,'/categoriesDatas');
-      await onValue(dbRef,(snapshot) => {
-       setCategories((state) => [snapshot.val()]);
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  const db = getDatabase(app)
 
-  useEffect(()=>{
-      getCategories()
+  useMemo(()=>{
+    const dbRef = ref(db,'/categoriesDatas');
+    onValue(dbRef,(snapshot) => {
+     const datas = snapshot.val()
+     if (datas !== null) {
+      setCategories(datas);
+     }
+     // console.log(datas);
+    });
+    // console.log(dbRef);
   },[])
 
-  // const getProperty = categories!== null || categories!==[] || categories!== undefined ? Object.getOwnPropertyNames(categories?.years['2022'].months) : ''
+  const getProperty = categories?.years['2022']
 
-  console.log(categories);
+  console.log(getProperty);
 
     return(
       <div style={split}>
@@ -98,24 +85,24 @@ const Dashboard = () => {
         <div className="gap">
           <h5>Selamat Datang, Admin {user.name}</h5>
           <p>statistik</p>
-            <div>
-              <Bar
-                datasetIdKey='id'
-                data={data}
-                options={{
-                  responsive: true,
-                  plugins: {
-                    legend: {
-                      position: 'top',
-                    },
-                    title: {
-                      display: true,
-                      text: 'Statistik Konsultasi Hukum',
-                    },
+          {categories ? <div>
+            <Bar
+              datasetIdKey='id'
+              data={data}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top',
                   },
-                }}
-              />
-            </div>
+                  title: {
+                    display: true,
+                    text: 'Statistik Konsultasi Hukum',
+                  },
+                },
+              }}
+            />
+        </div> : null}
         </div>
       </div>
     );
